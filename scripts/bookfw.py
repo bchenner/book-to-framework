@@ -243,7 +243,8 @@ def cmd_notes(a):
             bad(f"reading ledger has no row for {c['id']} (lines {c['lines'][0]}-{c['lines'][1]})")
         elif len(re.sub(r"[|\s\d-]", "", rows[c["id"]])) < 25:
             bad(f"reading ledger row {c['id']} does not say what is in it")
-    if not a.chunks and man["pictures"] >= 12:
+    page_scans = man["pictures"] >= 0.9 * man["pages"] and man["words"] > 250 * man["pages"]     # every page is a picture, but of text
+    if not a.chunks and man["pictures"] >= 12 and not page_scans:
         for n in range(1, man["sheets"] + 1):
             if f"S{n:02d}" not in rows:
                 bad(f"reading ledger has no row for picture sheet S{n:02d}")
